@@ -1,0 +1,11 @@
+name: UserShop
+version: '${project.version}'
+main: org.chamchi.usershop.UserShop
+api-version: '1.20'
+depend:
+  - Vault
+commands:
+  유저상점:
+    description: 유저상점 관련 명령어입니다.
+  유저상점관리:
+    description: 유저상점 어드민 명령어입니다.
