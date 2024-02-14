@@ -1,2 +1,1 @@
-this is usershop plugin
-thank you
+usershop plugin
