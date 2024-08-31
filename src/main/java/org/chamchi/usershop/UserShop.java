@@ -1,6 +1,5 @@
 package org.chamchi.usershop;
 
-import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,24 +9,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.chamchi.usershop.Commands.UserShopAdminCommand;
-import org.chamchi.usershop.Commands.UserShopCommand;
-import org.chamchi.usershop.Instance.UserShopInstance;
-import org.chamchi.usershop.Instance.UserShopSlotData;
-import org.chamchi.usershop.Listener.UserShopListener;
+import org.chamchi.usershop.command.UserShopAdminCommand;
+import org.chamchi.usershop.command.UserShopCommand;
+import org.chamchi.usershop.instance.UserShopInstance;
+import org.chamchi.usershop.instance.UserShopSlotData;
+import org.chamchi.usershop.listener.InventoryClickListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
 public final class UserShop extends JavaPlugin {
-    private static UserShop instance;
     private static UserShopInstance userShopInstance;
     private static RegisteredServiceProvider<Economy> rsp;
-    private final File dataFile = new File(this.getDataFolder() + "\\" + "data.yml");
-    public static UserShop getInstance() {
-        return instance;
-    }
+    private final File dataFile = new File(this.getDataFolder(),"data.yml");
 
     public static UserShopInstance getUserShopInstance() {
         return userShopInstance;
@@ -41,14 +36,14 @@ public final class UserShop extends JavaPlugin {
     public void onEnable() {
         Objects.requireNonNull(getCommand("유저상점")).setExecutor(new UserShopCommand());
         getCommand("유저상점관리").setExecutor(new UserShopAdminCommand());
-        getServer().getPluginManager().registerEvents(new UserShopListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getLogger().info("유저상점 플러그인이 활성화 되었습니다. 제작자: 참치");
         rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
     }
 
     @Override
     public void onLoad() {
-        instance = this;
+        UserShop instance = this;
         if(!instance.getDataFolder().exists()) {
             instance.getDataFolder().mkdir();
         }
@@ -86,7 +81,7 @@ public final class UserShop extends JavaPlugin {
         if (userShopInstance.userShopSlotDataArrayList == null) {
             return;
         }
-        for(int i = 0; i<userShopInstance.userShopSlotDataArrayList.size(); i++) {
+        for(int i = 0; i < userShopInstance.userShopSlotDataArrayList.size(); i++) {
             configurationSection.createSection(String.valueOf(i));
             ConfigurationSection configurationSection2 = configurationSection.getConfigurationSection(String.valueOf(i));
             UserShopSlotData userShopSlotData = userShopInstance.userShopSlotDataArrayList.get(i);

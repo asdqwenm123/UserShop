@@ -1,4 +1,4 @@
-package org.chamchi.usershop.Instance;
+package org.chamchi.usershop.instance;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

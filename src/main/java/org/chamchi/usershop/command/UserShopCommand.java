@@ -1,4 +1,4 @@
-package org.chamchi.usershop.Commands;
+package org.chamchi.usershop.command;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -7,15 +7,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.chamchi.usershop.Instance.UserShopInstance;
-import org.chamchi.usershop.Instance.UserShopSlotData;
 import org.chamchi.usershop.UserShop;
+import org.chamchi.usershop.instance.UserShopInstance;
+import org.chamchi.usershop.instance.UserShopSlotData;
 import org.jetbrains.annotations.NotNull;
 
 public class UserShopCommand implements CommandExecutor {
-
-    private static final UserShop plugin = UserShop.getInstance();
     private static final UserShopInstance userShopInstance = UserShop.getUserShopInstance();
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
@@ -50,7 +49,6 @@ public class UserShopCommand implements CommandExecutor {
             send(p, "유저상점에 해당 아이템을 등록하였습니다.");
             p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
-        p = null;
         return false;
     }
 

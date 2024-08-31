@@ -1,19 +1,16 @@
-package org.chamchi.usershop.Commands;
+package org.chamchi.usershop.command;
 
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.chamchi.usershop.Instance.UserShopInstance;
 import org.chamchi.usershop.UserShop;
+import org.chamchi.usershop.instance.UserShopInstance;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-public class UserShopAdminCommand implements @Nullable CommandExecutor {
+public class UserShopAdminCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {

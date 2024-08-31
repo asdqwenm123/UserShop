@@ -1,4 +1,4 @@
-package org.chamchi.usershop.Instance;
+package org.chamchi.usershop.instance;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -6,29 +6,25 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.chamchi.usershop.UserShop;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserShopInstance {
-
-    private int _maxPage;
-    public ArrayList<UserShopSlotData> userShopSlotDataArrayList = new ArrayList<UserShopSlotData>();
-    private final File saveFile = new File(UserShop.getInstance().getDataFolder() + "\\" + "data.yml");
+    private int maxPage;
+    public ArrayList<UserShopSlotData> userShopSlotDataArrayList = new ArrayList<>();
 
     public UserShopInstance() {
-        this._maxPage = (int) (1 + Math.floor(userShopSlotDataArrayList.size() / 45));
+        this.maxPage = (int) (1 + Math.floor(userShopSlotDataArrayList.size() / 45));
     }
 
     public Inventory open(int page) {
-        this._maxPage = 1;
-        if(userShopSlotDataArrayList != null) {
-            this._maxPage = (int) (1 + Math.floor(userShopSlotDataArrayList.size() / 45));
+        this.maxPage = 1;
+        if (userShopSlotDataArrayList != null) {
+            this.maxPage = (int) (1 + Math.floor(userShopSlotDataArrayList.size() / 45));
             if (page != 1 && (userShopSlotDataArrayList.size() % 45) == 0) {
-                this._maxPage -= 1;
+                this.maxPage -= 1;
             }
         }
         Inventory inventory = Bukkit.createInventory(null, 54, Component.text("§8§l[UserShop] §8" + page + "페이지"));
@@ -36,33 +32,32 @@ public class UserShopInstance {
             if (page > 1 && userShopSlotDataArrayList.size() <= (page-1)*45) {
                 return open(page-1);
             }
-            int _slot;
-            for(int count = 0; count <45; count++) {
-                if(userShopSlotDataArrayList.size()-1 < ((page-1)*45) + count) {
+            int slot;
+            for (int count = 0; count < 45; count++) {
+                if(userShopSlotDataArrayList.size() - 1 < ((page - 1) * 45) + count) {
                     break;
                 }
-                _slot = ((page - 1) * 45) + count;
-                UserShopSlotData slot = userShopSlotDataArrayList.get(_slot);
-                inventory.setItem(count, invItem(slot));
+                slot = ((page - 1) * 45) + count;
+                UserShopSlotData slotData = userShopSlotDataArrayList.get(slot);
+                inventory.setItem(count, getSlotDataItem(slotData));
             }
         }
-        for(int i = 45; i<54; i++) {
+        for (int i = 45; i < 54; i++) {
             inventory.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
         }
         if (page > 1) {
-            inventory.setItem(45, Button("이전"));
+            inventory.setItem(45, getButton("이전"));
         }
-        if (_maxPage > page) {
-            inventory.setItem(53, Button("다음"));
+        if (maxPage > page) {
+            inventory.setItem(53, getButton("다음"));
         }
         return inventory;
     }
 
-    public ItemStack invItem(UserShopSlotData userShopSlotData) {
+    public ItemStack getSlotDataItem(UserShopSlotData userShopSlotData) {
         ItemStack itemStack = new ItemStack(userShopSlotData.getItemStack());
         ItemMeta itemMeta = itemStack.getItemMeta();
-        @Nullable List<Component> components = new ArrayList<Component>() {
-        };
+        List<Component> components = new ArrayList<>();
         if(itemMeta.lore() != null) {
             components = itemMeta.lore();
         }
@@ -76,7 +71,7 @@ public class UserShopInstance {
         return itemStack;
     }
 
-    public ItemStack Button(String type) {
+    public ItemStack getButton(String type) {
         if (type.equalsIgnoreCase("이전") || type.equalsIgnoreCase("다음")) {
             ItemStack itemStack = new ItemStack(Material.OAK_HANGING_SIGN);
             ItemMeta itemMeta = itemStack.getItemMeta();

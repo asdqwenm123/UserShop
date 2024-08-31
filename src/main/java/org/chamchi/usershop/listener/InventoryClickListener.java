@@ -1,4 +1,4 @@
-package org.chamchi.usershop.Listener;
+package org.chamchi.usershop.listener;
 
 import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.economy.Economy;
@@ -10,11 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.chamchi.usershop.Instance.UserShopInstance;
-import org.chamchi.usershop.Instance.UserShopSlotData;
 import org.chamchi.usershop.UserShop;
-public class UserShopListener implements Listener {
-
+import org.chamchi.usershop.instance.UserShopInstance;
+import org.chamchi.usershop.instance.UserShopSlotData;
+public class InventoryClickListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getView().getOriginalTitle().contains("§8§l[UserShop]")) {
@@ -48,7 +47,7 @@ public class UserShopListener implements Listener {
                 int page = Integer.parseInt(strings[1].replace("페이지", ""));
                 UserShopInstance userShopInstance = UserShop.getUserShopInstance();
 
-                int count = (page-1)*45 + slot;
+                int count = (page - 1) * 45 + slot;
                 UserShopSlotData data = userShopInstance.userShopSlotDataArrayList.get(count);
 
                 if (p.getName().equalsIgnoreCase(data.getPlayer().getName())) {
@@ -56,7 +55,7 @@ public class UserShopListener implements Listener {
                     return;
                 }
                 Economy economy = UserShop.getEconomy();
-                if(economy.getBalance(p) < data.getPrice()) {
+                if (economy.getBalance(p) < data.getPrice()) {
                     send(p, "보유 금액이 부족하여 해당 아이템을 구매하실 수 없습니다.");
                     return;
                 }
@@ -69,9 +68,8 @@ public class UserShopListener implements Listener {
 
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     if (player.getOpenInventory().getOriginalTitle().contains("§8§l[UserShop]")) {
-                        String[] splits = ChatColor.stripColor(player.getOpenInventory().getOriginalTitle()).split(" ");
-                        int _current = Integer.parseInt(strings[1].replace("페이지", ""));
-                        player.openInventory(userShopInstance.open(_current));
+                        int current = Integer.parseInt(strings[1].replace("페이지", ""));
+                        player.openInventory(userShopInstance.open(current));
                     }
                 }
             }
